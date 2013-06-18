@@ -37,11 +37,17 @@ template "/opt/corsis/etc/rotate-to-s3.json" do
         :source => node['rotate-to-s3']['source'].to_json,
         :pidfile => node['rotate-to-s3']['pidfile']
     )
+    action :create
 end
 
 cron_d "rotate-to-s3" do
     minute 0
     command "/opt/corsis/bin/rotate-to-s3.py"
     user "root"
+end
+
+service "rotate-to-s3" do
+    supports :stop => true
+    action :enable
 end
 
